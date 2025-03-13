@@ -7,10 +7,15 @@
       <div class="text-surface-0 font-bold text-4xl leading-tight">Your Fitness Journey Starts Here.</div>
       <div class="text-surface-100 text-xl leading-normal">Build a personalized workout plan tailored to your goals and
         preferences.</div>
-      <Button label="Create Workout" rounded class="mt-4" />
+      <Button @click="createWorkout" label="Create Workout" rounded class="mt-4" />
     </div>
   </div>
 </template>
 <script setup>
   import Button from 'primevue/button';
+  import router from '@/router';
+
+  const createWorkout = () => {
+    router.push({ name: 'WorkoutSetup' });
+  }
 </script>
