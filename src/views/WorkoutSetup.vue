@@ -150,13 +150,15 @@
     }
 
     const getExercisePlan = (callback) => {
-        let valid = {}, invalid = {};
+        let valid = [], invalid = [];
         selectedExercisesError.value = false;
         workoutList.value.forEach(list => {
-            if (list.selectedExercises.length == workoutPlan.numberExercisesPerBodyPart)
-                valid[list.listName] = list.selectedExercises
-            else
-                invalid[list.listName] = list.selectedExercises
+            if (list.selectedExercises.length == workoutPlan.numberExercisesPerBodyPart) {
+                valid.push(...list.selectedExercises)
+            }
+            else {
+                invalid.push(list.listName)
+            }
 
         })
         if (Object.keys(invalid).length) {
