@@ -64,6 +64,7 @@
                     </Tabs>
                     <p class="text-red-400" v-if="selectedExercisesError">{{ selectedExercisesErrorMessage }}</p>
                     <Button label="Next" @click="getExercisePlan(activateCallback)" />
+                    <Button label="randomize" @click="randomExercises(activateCallback)" />
                 </StepPanel>
             </StepItem>
             <StepItem value="3">
@@ -147,6 +148,41 @@
         localStorage.setItem('exercisePlan', JSON.stringify(exercisePlan.value))
         localStorage.setItem('workoutPlan', JSON.stringify(workoutOptions.value))
         router.push('/workout-plan')
+    }
+
+    const generateExercisePlanShow = (basicExercisePlan) => {
+
+        exercisePlanShow.value = basicExercisePlan.reduce((acc, exercise) => {
+            const { primaryMuscle } = exercise
+            if (!acc[primaryMuscle]) {
+                acc[primaryMuscle] = []
+            }
+            acc[primaryMuscle].push(exercise)
+            return acc
+        }, {})
+    }
+
+    const randomExercises = (callback) => {
+        const valid = []
+        workoutList.value.forEach(list => {
+            const randomExercises = []
+            const noRepeat = []
+            for (let i = 0; i < workoutPlan.numberExercisesPerBodyPart; i++) {
+                // generate random number from 0 to length of exercises in the list
+                const randomExerciseId = Math.floor(Math.random() * (exercisesByCategory.value[list.listName].length))
+                if (noRepeat.includes(randomExerciseId)) {
+                    i--
+                    continue
+                }
+                noRepeat.push(randomExerciseId)
+                randomExercises.push(exercisesByCategory.value[list.listName][randomExerciseId])
+            }
+            valid.push(...randomExercises)
+        })
+        exercisePlan.value = valid
+        generateExercisePlanShow(valid)
+        console.log(exercisePlanShow.value)
+        callback('3');
     }
 
     const getExercisePlan = (callback) => {
