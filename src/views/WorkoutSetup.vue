@@ -19,7 +19,7 @@
                         </div>
                         <div class="flex flex-col gap-4">
                             <label for="duration" class="text-surface-0 font-medium">Duration {{ workoutOptions.duration
-                            }}
+                                }}
                                 minutes</label>
                             <div class="flex justify-center">
                                 <Slider id="duration" v-model="workoutOptions.duration" :min="30" :max="180" :step="15"
@@ -80,11 +80,11 @@
                         </div>
                         <p class="font-bold">Exercises:</p>
                         <div class="space-y-2">
-                            <p class="flex gap-2" v-for="(exercise, index) in Object.keys(exercisePlan)" :key="index">
-                                <span class="font-semibold "> {{ exercise.charAt(0).toUpperCase() +
-                                    exercise.slice(1)
-                                }}:</span>
-                                {{exercisePlan[exercise].map(exercise =>
+                            <p class="flex gap-2" v-for="(muscle, index) in Object.keys(exercisePlanShow)" :key="index">
+                                <span class="font-semibold "> {{ muscle.charAt(0).toUpperCase() +
+                                    muscle.slice(1)
+                                    }}:</span>
+                                {{exercisePlanShow[muscle].map(exercise =>
                                     exercise.name).join(', ')}}
                             </p>
                         </div>
@@ -142,6 +142,7 @@
     const selectedExercisesError = ref(false)
     const selectedExercisesErrorMessage = ref('')
     const exercisePlan = ref({})
+    const exercisePlanShow = ref({})
     let workoutPlan = {}
 
     const makeWorkutPlan = () => {
@@ -197,15 +198,16 @@
             }
 
         })
-        if (Object.keys(invalid).length) {
+        if (invalid.length) {
             selectedExercisesError.value = true;
-            if (Object.keys(invalid).length > 3)
+            if (invalid.length > 3)
                 selectedExercisesErrorMessage.value = 'Please select the correct number of exercises for each muscle group'
             else
-                selectedExercisesErrorMessage.value = `Please select the correct number of exercises for the following muscle groups: ${Object.keys(invalid).join(', ')}`
+                selectedExercisesErrorMessage.value = `Please select the correct number of exercises for the following muscle groups: ${invalid.join(', ')}`
             return
         }
         exercisePlan.value = valid
+        generateExercisePlanShow(valid)
         callback('3');
     }
     const blockUserMaxExercises = (index) => {

@@ -9,9 +9,8 @@
             <p>frequency: {{ workoutPlan.frequency }} per week.</p>
         </div>
         <div>
-            <DataTable :value="Object.values(exercisePlan).map((exercise) => exercise[0])" rowGroupMode="subheader"
-                groupRowsBy="primaryMuscle" sortMode="single" sortField="primaryMuscle" :sortOrder="1" size="small"
-                editMode="cell" @cell-edit-complete="cellEdited">
+            <DataTable :value="exercisePlan" rowGroupMode="subheader" groupRowsBy="primaryMuscle" sortMode="single"
+                sortField="primaryMuscle" :sortOrder="1" size="small" editMode="cell" @cell-edit-complete="cellEdited">
                 <Column field="primaryMuscle"></Column>
                 <Column header="Name">
                     <template #body="slotProps">
@@ -51,7 +50,7 @@
                     </template>
                 </Column>
                 <template #groupheader="slotProps">
-                    <div>
+                    <div class="py-1">
                         <span class="font-semibold">{{ slotProps.data.primaryMuscle.charAt(0).toUpperCase() +
                             slotProps.data.primaryMuscle.slice(1) }}</span>
                     </div>
@@ -102,7 +101,8 @@
             console.log(error)
             return
         }
-        Object.values(exercisePlan.value).map((ex) => ex[0]).forEach(ex => {
+        console.log(exercisePlan.value)
+        Object.values(exercisePlan.value).forEach(ex => {
             dialogVisibility.value[ex.id] = false
         })
         setInterval(() => {
