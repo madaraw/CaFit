@@ -13,9 +13,10 @@
 </template>
 <script setup>
   import Button from 'primevue/button';
-  import router from '@/router';
+  import { useRouter } from 'vue-router';
 
+  const router = useRouter();
   const createWorkout = () => {
-    router.push({ name: 'WorkoutSetup' });
+    router.push({ name: 'WorkoutSetup' })
   }
 </script>

@@ -19,7 +19,7 @@
                         </div>
                         <div class="flex flex-col gap-4">
                             <label for="duration" class="text-surface-0 font-medium">Duration {{ workoutOptions.duration
-                                }}
+                            }}
                                 minutes</label>
                             <div class="flex justify-center">
                                 <Slider id="duration" v-model="workoutOptions.duration" :min="30" :max="180" :step="15"
@@ -83,7 +83,7 @@
                             <p class="flex gap-2" v-for="(muscle, index) in Object.keys(exercisePlanShow)" :key="index">
                                 <span class="font-semibold "> {{ muscle.charAt(0).toUpperCase() +
                                     muscle.slice(1)
-                                    }}:</span>
+                                }}:</span>
                                 {{exercisePlanShow[muscle].map(exercise =>
                                     exercise.name).join(', ')}}
                             </p>
@@ -116,7 +116,7 @@
     import { ref, useTemplateRef } from 'vue';
     import WorkoutList from '../components/WorkoutList.vue';
     import exercises from '../data/exercises.json';
-    import router from '@/router';
+    import { useRouter } from 'vue-router';
 
 
 
@@ -143,6 +143,7 @@
     const selectedExercisesErrorMessage = ref('')
     const exercisePlan = ref({})
     const exercisePlanShow = ref({})
+    const router = useRouter()
     let workoutPlan = {}
 
     const makeWorkutPlan = () => {
