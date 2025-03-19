@@ -19,7 +19,7 @@
                         </div>
                         <div class="flex flex-col gap-4">
                             <label for="duration" class="text-surface-0 font-medium">Duration {{ workoutOptions.duration
-                                }}
+                            }}
                                 minutes</label>
                             <div class="flex justify-center">
                                 <Slider id="duration" v-model="workoutOptions.duration" :min="30" :max="180" :step="15"
@@ -62,7 +62,8 @@
                             </TabPanel>
                         </TabPanels>
                     </Tabs>
-                    <p class="text-red-400" v-if="selectedExercisesError">{{ selectedExercisesErrorMessage }}</p>
+                    <p class="text-red-400 mb-2" v-if="selectedExercisesErrorMessage">{{ selectedExercisesErrorMessage
+                    }}</p>
                     <Button label="back" class="!mr-2" @click="activateCallback('1')" />
                     <Button label="Next" class="!mr-2" @click="getExercisePlan(activateCallback)" />
                     <Button label="randomize" outlined @click="randomExercises(activateCallback)" />
@@ -84,7 +85,7 @@
                             <p class="flex gap-2" v-for="(muscle, index) in Object.keys(exercisePlanShow)" :key="index">
                                 <span class="font-semibold "> {{ muscle.charAt(0).toUpperCase() +
                                     muscle.slice(1)
-                                    }}:</span>
+                                }}:</span>
                                 {{exercisePlanShow[muscle].map(exercise =>
                                     exercise.name).join(', ')}}
                             </p>
@@ -150,7 +151,6 @@
     const disableTabs = ref(false);
     const currentExerciseCategory = ref(0);
     const workoutList = useTemplateRef('workoutList')
-    const selectedExercisesError = ref(false)
     const selectedExercisesErrorMessage = ref('')
     const exercisePlan = ref({})
     const exercisePlanShow = ref({})
@@ -254,12 +254,13 @@
         })
         exercisePlan.value = valid
         generateExercisePlanShow(valid)
+        selectedExercisesErrorMessage.value = "";
         callback('3');
     }
 
     const getExercisePlan = (callback) => {
         let valid = [], invalid = [];
-        selectedExercisesError.value = false;
+        selectedExercisesErrorMessage.value = "";
         workoutList.value.forEach(list => {
             if (list.selectedExercises.length == workoutPlan.numberExercisesPerBodyPart) {
                 valid.push(...list.selectedExercises)
@@ -270,7 +271,6 @@
 
         })
         if (invalid.length) {
-            selectedExercisesError.value = true;
             if (invalid.length > 3)
                 selectedExercisesErrorMessage.value = 'Please select the correct number of exercises for each muscle group'
             else
