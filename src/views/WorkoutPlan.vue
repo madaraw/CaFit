@@ -1,12 +1,13 @@
 <template>
-    <div class="space-y-4 px-4 md:px-12 lg:px-20">
-        <div class="flex flex-col mt-2">
-            <div class="flex justify-center">
+    <div class="space-y-6 px-1 md:px-12 lg:px-20">
+        <div class="flex flex-col px-3 mt-2">
+            <div class="flex justify-center mb-2">
                 <h1 class="text-surface-0 font-bold text-4xl leading-tight">Workout Plan</h1>
             </div>
-            <p>Intensity: {{ workoutPlan.intensity.name }}.</p>
-            <p>Duration of the workout: {{ workoutPlan.duration }} minutes.</p>
-            <p>frequency: {{ workoutPlan.frequency }} per week.</p>
+            <p><span class="font-semibold">Name:</span> {{ workoutPlan.name }}</p>
+            <p><span class="font-semibold">Intensity:</span> {{ workoutPlan.intensity.name }}.</p>
+            <p><span class="font-semibold">Duration of the workout:</span> {{ workoutPlan.duration }} minutes.</p>
+            <p><span class="font-semibold">frequency:</span> {{ workoutPlan.frequency }} per week.</p>
         </div>
         <div>
             <DataTable :value="exercisePlan" rowGroupMode="subheader" groupRowsBy="primaryMuscle" sortMode="single"
@@ -67,11 +68,13 @@
     import Button from 'primevue/button';
     import InputNumber from 'primevue/inputnumber';
     import Dialog from 'primevue/dialog';
+    import { useRoute } from 'vue-router';
 
 
     const workoutPlan = ref(null)
     const exercisePlan = ref(null)
     const dialogVisibility = ref({})
+    const route = useRoute()
     const sets = computed(() => {
         return workoutPlan.value.frequency >= 3 ? '1 - 2' : workoutPlan.value.frequency > 1 ? '2' : '3'
     })
@@ -79,10 +82,12 @@
         return workoutPlan.value.intensity.name === 'low' ? '8 - 12' : workoutPlan.value.intensity.name === 'medium' ? '6 - 8' : '4 - 6'
     })
     const loopImg = ref(0)
+    let exercisesTable = []
     const cellEdited = (event) => {
         let { field, data, newValue } = event
         data[field] = newValue
-        localStorage.setItem('exercisePlan', JSON.stringify(exercisePlan.value))
+        exercisesTable[exercisesTable.findIndex(ex => ex.id == route.params.id)].exercisePlan = exercisePlan.value
+        localStorage.setItem('exercisesTable', JSON.stringify(exercisesTable))
     }
     const showExercise = (slotProps) => {
         dialogVisibility.value[slotProps.data.id] = true
@@ -90,18 +95,18 @@
 
     onBeforeMount(() => {
         try {
-            exercisePlan.value = JSON.parse(localStorage.getItem('exercisePlan'))
+            exercisesTable = JSON.parse(localStorage.getItem('exercisesTable'))
+            exercisePlan.value = exercisesTable.find(ex => ex.id == route.params.id).exercisePlan
         } catch (error) {
             console.log(error)
             return
         }
         try {
-            workoutPlan.value = JSON.parse(localStorage.getItem('workoutPlan'))
+            workoutPlan.value = JSON.parse(localStorage.getItem('workoutsTable')).find(ex => ex.id == route.params.id)
         } catch (error) {
             console.log(error)
             return
         }
-        console.log(exercisePlan.value)
         Object.values(exercisePlan.value).forEach(ex => {
             dialogVisibility.value[ex.id] = false
         })

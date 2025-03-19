@@ -70,7 +70,7 @@
             <StepItem value="3">
                 <Step>Review</Step>
                 <StepPanel class="py-6" v-slot="{ activateCallback }">
-                    <div class="space-y-3">
+                    <div class="space-y-6">
                         <p class="font-bold">Review your workout plan</p>
                         <div class="space-y-2">
                             <p>Intensity: {{ workoutOptions.intensity.name }}</p>
@@ -78,8 +78,8 @@
                                 ' time per week' : ' times per week'}` }}</p>
                             <p>Duration: {{ workoutOptions.duration }} minutes</p>
                         </div>
-                        <p class="font-bold">Exercises:</p>
                         <div class="space-y-2">
+                            <p class="font-bold">Exercises:</p>
                             <p class="flex gap-2" v-for="(muscle, index) in Object.keys(exercisePlanShow)" :key="index">
                                 <span class="font-semibold "> {{ muscle.charAt(0).toUpperCase() +
                                     muscle.slice(1)
@@ -88,10 +88,16 @@
                                     exercise.name).join(', ')}}
                             </p>
                         </div>
+                        <div class="space-y-2">
+                            <p class="font-semibold">Please give a name to your workout:</p>
+                            <InputText ref="workoutName" v-model="workoutOptions.name" placeholder="Workout name" />
+                        </div>
                     </div>
-
+                    <p class="text-red-400 mt-4" v-if="finishWorkoutPlanningError">{{ finishWorkoutPlanningError }}
+                    </p>
+                    <ConfirmDialog></ConfirmDialog>
                     <Button label="Back" class="!mr-2" @click="activateCallback('2')" />
-                    <Button label="Finish" class="!mt-8" @click="makeWorkutPlan" />
+                    <Button label="Finish" class="!mt-2" @click="makeWorkutPlan" />
                 </StepPanel>
             </StepItem>
         </Stepper>
@@ -104,6 +110,7 @@
     import Slider from 'primevue/slider';
     import Button from 'primevue/button';
     import InputNumber from 'primevue/inputnumber';
+    import InputText from 'primevue/inputtext';
     import Stepper from 'primevue/stepper';
     import StepItem from 'primevue/stepitem';
     import Step from 'primevue/step';
@@ -113,7 +120,9 @@
     import Tab from 'primevue/tab';
     import TabPanels from 'primevue/tabpanels';
     import TabPanel from 'primevue/tabpanel';
-    import { ref, useTemplateRef } from 'vue';
+    import ConfirmDialog from 'primevue/confirmdialog';
+    import { useConfirm } from "primevue/useconfirm";
+    import { nextTick, onBeforeMount, ref, useTemplateRef } from 'vue';
     import WorkoutList from '../components/WorkoutList.vue';
     import exercises from '../data/exercises.json';
     import { useRouter } from 'vue-router';
@@ -133,6 +142,7 @@
         intensity: "",
         frequency: 1,
         duration: 30,
+        name: ''
     })
     const selectedOptionsError = ref(false);
     const selectedTab = ref(0);
@@ -143,13 +153,77 @@
     const selectedExercisesErrorMessage = ref('')
     const exercisePlan = ref({})
     const exercisePlanShow = ref({})
+    const finishWorkoutPlanningError = ref(null)
     const router = useRouter()
+    const endConfirmDialog = useConfirm();
+    const workoutName = ref()
     let workoutPlan = {}
+    let workoutsTable = []
+    let exercisesTable = []
 
+    const createId = () => {
+        return Math.random().toString(36).substr(2, 9);
+    }
     const makeWorkutPlan = () => {
-        localStorage.setItem('exercisePlan', JSON.stringify(exercisePlan.value))
-        localStorage.setItem('workoutPlan', JSON.stringify(workoutOptions.value))
-        router.push('/workout-plan')
+        finishWorkoutPlanningError.value = null
+        if (!workoutOptions.value.name) {
+            finishWorkoutPlanningError.value = 'Please give a name to your workout'
+            return
+        }
+        if (!workoutsTable.find(workout => workout.name === workoutOptions.value.name)) {
+            pushToWorkoutTable()
+        } else {
+            endConfirmDialog.require({
+                message: 'A workout with this name already exists. Do you want to overwrite it?',
+                header: 'Overwrite workout?',
+                acceptProps: {
+                    label: 'Overwrite',
+                    severity: 'danger'
+                },
+                rejectProps: {
+                    label: 'Cancel',
+                    severity: 'secondary'
+                },
+                accept: () => {
+                    pushToWorkoutTable(true)
+                },
+                reject: () => {
+                    workoutOptions.value.name = ''
+                    nextTick(() => {
+                        workoutName.value.$el.focus()
+                    })
+                }
+
+            })
+        }
+    }
+
+    const pushToWorkoutTable = (replace = false) => {
+        let workoutId = replace ? workoutsTable.find(workout => workout.name === workoutOptions.value.name).id : createId()
+
+        if (workoutsTable.length && !replace) {
+            while (workoutsTable.find(workout => workout.id === workoutId)) {
+                workoutId = createId()
+            }
+        }
+        let workoutEntry = {
+            id: workoutId,
+            ...workoutOptions.value
+        }
+        if (replace) {
+            workoutsTable = workoutsTable.filter(workout => workout.id !== workoutId)
+            exercisesTable = exercisesTable.filter(exercise => exercise.id !== workoutId)
+        }
+        workoutsTable.push(workoutEntry)
+        exercisesTable.push({ id: workoutId, exercisePlan: exercisePlan.value })
+
+        localStorage.setItem('exercisesTable', JSON.stringify(exercisesTable))
+        localStorage.setItem('workoutsTable', JSON.stringify(workoutsTable))
+        console.log(
+            'exercisesTable', exercisesTable,
+            'workoutsTable', workoutsTable
+        )
+        router.push('/workout-plan/' + workoutId)
     }
 
     const generateExercisePlanShow = (basicExercisePlan) => {
@@ -294,6 +368,16 @@
 
         return acc;
     }, {}))
+
+    onBeforeMount(() => {
+        let workoutTable = JSON.parse(localStorage.getItem('workoutsTable'))
+        if (workoutTable?.length)
+            workoutsTable = workoutTable
+        let exerciseTable = JSON.parse(localStorage.getItem('exercisesTable'))
+        if (exerciseTable?.length)
+            exercisesTable = exerciseTable
+        console.log("initialize", workoutsTable, exercisesTable)
+    })
 </script>
 
 <style>
