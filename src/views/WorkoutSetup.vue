@@ -63,8 +63,9 @@
                         </TabPanels>
                     </Tabs>
                     <p class="text-red-400" v-if="selectedExercisesError">{{ selectedExercisesErrorMessage }}</p>
-                    <Button label="Next" @click="getExercisePlan(activateCallback)" />
-                    <Button label="randomize" @click="randomExercises(activateCallback)" />
+                    <Button label="back" class="!mr-2" @click="activateCallback('1')" />
+                    <Button label="Next" class="!mr-2" @click="getExercisePlan(activateCallback)" />
+                    <Button label="randomize" outlined @click="randomExercises(activateCallback)" />
                 </StepPanel>
             </StepItem>
             <StepItem value="3">
