@@ -1,6 +1,6 @@
 <template>
-    <div class="space-y-6 px-1 md:px-12 lg:px-20">
-        <div class="flex flex-col px-3 mt-2">
+    <div class="space-y-3 px-1 md:px-12 lg:px-20">
+        <div class="flex flex-col px-2 mt-2">
             <div class="flex justify-center mb-2">
                 <h1 class="text-surface-0 font-bold text-4xl leading-tight">Workout Plan</h1>
             </div>
@@ -10,8 +10,9 @@
             <p><span class="font-semibold">frequency:</span> {{ workoutPlan.frequency }} per week.</p>
         </div>
         <div>
-            <DataTable :value="exercisePlan" rowGroupMode="subheader" groupRowsBy="primaryMuscle" sortMode="single"
-                sortField="primaryMuscle" :sortOrder="1" size="small" editMode="cell" @cell-edit-complete="cellEdited">
+            <DataTable class="px-1 pb-4" :value="exercisePlan" rowGroupMode="subheader" groupRowsBy="primaryMuscle"
+                sortMode="single" sortField="primaryMuscle" :sortOrder="1" size="small" editMode="cell"
+                @cell-edit-complete="cellEdited">
                 <Column field="primaryMuscle"></Column>
                 <Column header="Name">
                     <template #body="slotProps">
