@@ -19,7 +19,7 @@
                         </div>
                         <div class="flex flex-col gap-4">
                             <label for="duration" class="text-surface-0 font-medium">Duration {{ workoutOptions.duration
-                            }}
+                                }}
                                 minutes</label>
                             <div class="flex justify-center">
                                 <Slider id="duration" v-model="workoutOptions.duration" :min="30" :max="180" :step="15"
@@ -83,7 +83,7 @@
                             <p class="flex gap-2" v-for="(muscle, index) in Object.keys(exercisePlanShow)" :key="index">
                                 <span class="font-semibold "> {{ muscle.charAt(0).toUpperCase() +
                                     muscle.slice(1)
-                                }}:</span>
+                                    }}:</span>
                                 {{exercisePlanShow[muscle].map(exercise =>
                                     exercise.name).join(', ')}}
                             </p>
@@ -219,10 +219,6 @@
 
         localStorage.setItem('exercisesTable', JSON.stringify(exercisesTable))
         localStorage.setItem('workoutsTable', JSON.stringify(workoutsTable))
-        console.log(
-            'exercisesTable', exercisesTable,
-            'workoutsTable', workoutsTable
-        )
         router.push('/workout-plan/' + workoutId)
     }
 
@@ -257,7 +253,6 @@
         })
         exercisePlan.value = valid
         generateExercisePlanShow(valid)
-        console.log(exercisePlanShow.value)
         callback('3');
     }
 
@@ -376,7 +371,6 @@
         let exerciseTable = JSON.parse(localStorage.getItem('exercisesTable'))
         if (exerciseTable?.length)
             exercisesTable = exerciseTable
-        console.log("initialize", workoutsTable, exercisesTable)
     })
 </script>
 
