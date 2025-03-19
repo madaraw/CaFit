@@ -4,7 +4,7 @@
             <div class="space-y-2">
                 <div>{{ slotProps.option.name }}</div>
                 <div v-if="slotProps.selected">
-                    <img :src="'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/' + slotProps.option.images[0]"
+                    <img :src="'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/' + slotProps.option.images[loopImg]"
                         alt="">
                 </div>
             </div>
@@ -17,11 +17,12 @@
 
 <script setup>
     import { Listbox } from 'primevue';
-    import { ref, watch } from 'vue';
+    import { onBeforeMount, ref, watch } from 'vue';
 
     const props = defineProps(['workouts', 'maxExercises', 'index', 'listName'])
     const emit = defineEmits(['exceed-max-exercises'])
     const selectedExercises = ref([])
+    const loopImg = ref(0)
     watch(selectedExercises, (newValue) => {
         if (newValue.length > props.maxExercises) {
             emit('exceed-max-exercises', props.index)
@@ -29,6 +30,16 @@
         else {
             emit('exceed-max-exercises', null)
         }
+    })
+    onBeforeMount(() => {
+
+        setInterval(() => {
+            if (loopImg.value == 0) {
+                loopImg.value++
+            } else {
+                loopImg.value = 0
+            }
+        }, 1000);
     })
 
     defineExpose({ selectedExercises, listName: props.listName })
