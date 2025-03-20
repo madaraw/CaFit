@@ -23,7 +23,7 @@
                         </div>
                         <div class="flex flex-col gap-4">
                             <label for="duration" class="text-surface-0 font-medium">Duration {{ workoutOptions.duration
-                            }}
+                                }}
                                 minutes</label>
                             <div class="flex justify-center">
                                 <Slider id="duration" v-model="workoutOptions.duration" :min="30" :max="180" :step="15"
@@ -67,7 +67,7 @@
                         </TabPanels>
                     </Tabs>
                     <p class="text-red-400 mb-2" v-if="selectedExercisesErrorMessage">{{ selectedExercisesErrorMessage
-                    }}</p>
+                        }}</p>
                     <Button label="back" class="!mr-2" @click="activateCallback('1')" />
                     <Button label="Next" class="!mr-2" @click="getExercisePlan(activateCallback)" />
                     <Button label="randomize" outlined @click="randomExercises(activateCallback)" />
@@ -89,7 +89,7 @@
                             <p class="flex gap-2" v-for="(muscle, index) in Object.keys(exercisePlanShow)" :key="index">
                                 <span class="font-semibold "> {{ muscle.charAt(0).toUpperCase() +
                                     muscle.slice(1)
-                                }}:</span>
+                                    }}:</span>
                                 {{exercisePlanShow[muscle].map(exercise =>
                                     exercise.name).join(', ')}}
                             </p>
@@ -305,7 +305,6 @@
     // make a function that will take intensity frequency and duration in min and make a workout plan (upper lower/ full body/ full body EOD/ etc)
     const lawsOfExercise = () => {
         const { intensity, frequency, duration } = workoutOptions.value;
-        let workoutPlan = {};
         // based off duration you can choose more or less exercises
         let numberExercisesPerBodyPart = 0;
         // based off intensity you can get more or less reps/sets
