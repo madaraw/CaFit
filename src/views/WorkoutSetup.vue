@@ -2,7 +2,7 @@
     <div class="bg-surface-950 min-h-screen px-4 pt-6 md:px-12 xl:px-40">
         <div class="pb-4">
             <h1 class="text-surface-0 font-bold text-3xl xl:text-4xl leading-tight">Set up your workout</h1>
-            <p class="text-surface-100 xl:text-lg">Please follow the steps below to set up your workout plan.</p>
+            <p class="text-surface-100 mt-2 xl:text-lg">Please follow the steps below to set up your workout plan.</p>
         </div>
         <Stepper value="1" linear>
             <StepItem value="1">
@@ -25,7 +25,7 @@
                         </div>
                         <div class="flex flex-col gap-4">
                             <label for="duration" class="text-surface-0 font-medium">Duration {{ workoutOptions.duration
-                            }}
+                                }}
                                 minutes</label>
                             <div class="flex justify-center">
                                 <Slider id="duration" v-model="workoutOptions.duration" :min="30" :max="180" :step="15"
@@ -69,7 +69,7 @@
                         </TabPanels>
                     </Tabs>
                     <p class="text-red-400 mb-2" v-if="selectedExercisesErrorMessage">{{ selectedExercisesErrorMessage
-                    }}</p>
+                        }}</p>
                     <Button label="back" class="!mr-2" @click="activateCallback('1')" />
                     <Button label="Next" class="!mr-2" @click="getExercisePlan(activateCallback)" />
                     <Button label="randomize" outlined @click="randomExercises(activateCallback)" />
@@ -91,7 +91,7 @@
                             <p class="flex gap-2" v-for="(muscle, index) in Object.keys(exercisePlanShow)" :key="index">
                                 <span class="font-semibold "> {{ muscle.charAt(0).toUpperCase() +
                                     muscle.slice(1)
-                                }}:</span>
+                                    }}:</span>
                                 {{exercisePlanShow[muscle].map(exercise =>
                                     exercise.name).join(', ')}}
                             </p>
