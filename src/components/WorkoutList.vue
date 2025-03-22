@@ -1,11 +1,16 @@
 <template>
-    <Listbox v-model="selectedExercises" multiple :options="workouts">
+    <Listbox class="w-full" v-model="selectedExercises" multiple :options="workouts"
+        :scrollHeight="device === 0 ? '14rem' : device === 1 ? '40rem' : '50rem'" :pt="{
+            option: {
+                style: device > 1 ? 'display: block;' : ''
+            }
+        }">
         <template #option="slotProps">
-            <div class="space-y-2">
-                <div>{{ slotProps.option.name }}</div>
-                <div v-if="slotProps.selected">
+            <div class="space-y-2 flex flex-col justify-center items-start">
+                <div class="lg:text-lg">{{ slotProps.option.name }}</div>
+                <div class="lg:self-center lg:justify-self-center" v-if="slotProps.selected">
                     <img :src="'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/' + slotProps.option.images[loopImg]"
-                        alt="">
+                        :alt="slotProps.option.name">
                 </div>
             </div>
         </template>
@@ -23,6 +28,9 @@
     const emit = defineEmits(['exceed-max-exercises'])
     const selectedExercises = ref([])
     const loopImg = ref(0)
+    // device 0 => mobile, 1 => tablet, 2 => desktop
+    let device = screen.width <= 640 ? 0 : screen.width <= 1024 ? 1 : 2
+
     watch(selectedExercises, (newValue) => {
         if (newValue.length > props.maxExercises) {
             emit('exceed-max-exercises', props.index)
@@ -32,7 +40,6 @@
         }
     })
     onBeforeMount(() => {
-
         setInterval(() => {
             if (loopImg.value == 0) {
                 loopImg.value++
