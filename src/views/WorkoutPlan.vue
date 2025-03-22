@@ -4,29 +4,32 @@
             <div class="flex justify-center mb-2">
                 <h1 class="text-surface-0 font-bold text-4xl leading-tight">Workout Plan</h1>
             </div>
-            <p><span class="font-semibold">Name:</span> {{ workoutPlan.name }}</p>
-            <p><span class="font-semibold">Intensity:</span> {{ workoutPlan.intensity.name }}.</p>
-            <p><span class="font-semibold">Duration of the workout:</span> {{ workoutPlan.duration }} minutes.</p>
-            <p><span class="font-semibold">frequency:</span> {{ workoutPlan.frequency }} per week.</p>
+            <div class="text-base lg:text-lg">
+                <p><span class="font-semibold">Name:</span> {{ workoutPlan.name }}</p>
+                <p><span class="font-semibold">Intensity:</span> {{ workoutPlan.intensity.name }}.</p>
+                <p><span class="font-semibold">Duration of the workout:</span> {{ workoutPlan.duration }} minutes.</p>
+                <p><span class="font-semibold">frequency:</span> {{ workoutPlan.frequency }} per week.</p>
+            </div>
         </div>
-        <div>
-            <DataTable class="px-1 pb-4" :value="exercisePlan" rowGroupMode="subheader" groupRowsBy="primaryMuscle"
-                sortMode="single" sortField="primaryMuscle" :sortOrder="1" size="small" editMode="cell"
+        <div class="py-4">
+            <DataTable :value="exercisePlan" rowGroupMode="subheader" groupRowsBy="primaryMuscle" sortMode="single"
+                sortField="primaryMuscle" :sortOrder="1"
+                :size="device === 0 ? 'small' : device === 1 ? 'normal' : 'large'" editMode="cell"
                 @cell-edit-complete="cellEdited">
                 <Column field="primaryMuscle"></Column>
                 <Column header="Name">
                     <template #body="slotProps">
-                        <span class="text-sm">{{ slotProps.data.name }}</span>
+                        <span class="text-sm lg:text-base xl:text-lg">{{ slotProps.data.name }}</span>
                     </template>
                 </Column>
                 <Column header="Sets">
                     <template #body>
-                        <span class="text-sm">{{ sets }}</span>
+                        <span class="text-sm lg:text-base xl:text-lg">{{ sets }}</span>
                     </template>
                 </Column>
                 <Column header="Reps">
                     <template #body>
-                        <span class="text-sm">{{ reps }}</span>
+                        <span class="text-sm lg:text-base xl:text-lg">{{ reps }}</span>
                     </template>
                 </Column>
                 <Column field="weight" header="Weight">
@@ -83,7 +86,9 @@
         return workoutPlan.value.intensity.name === 'low' ? '8 - 12' : workoutPlan.value.intensity.name === 'medium' ? '6 - 8' : '4 - 6'
     })
     const loopImg = ref(0)
+    let device = screen.width <= 640 ? 0 : screen.width <= 1024 ? 1 : 2
     let exercisesTable = []
+
     const cellEdited = (event) => {
         let { field, data, newValue } = event
         data[field] = newValue
