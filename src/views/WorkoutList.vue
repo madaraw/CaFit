@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-surface-950 min-h-screen p-2">
+    <div class="bg-surface-950 min-h-screen px-4 pt-6 md:px-12 xl:px-40">
         <div class="flex justify-center my-4">
             <h1 class="text-surface-0 font-bold text-4xl leading-tight">Workout List</h1>
         </div>
@@ -30,16 +30,16 @@
                     <p class="text-surface-0">No workouts available</p>
                 </Row>
             </DataTable>
-            <div class="flex items-center gap-6 mt-6">
+            <div class="flex flex-col md:flex-row items-center gap-6 mt-6">
                 <p class="text-surface-0 lg:text-lg xl:text-xl">Not enough workouts? Create one using this button.
                 </p>
                 <Button @click="createWorkout" label="Create Workout" rounded />
             </div>
         </div>
         <div class="mt-10" v-else>
+            <div class="flex flex-col md:flex-row items-center gap-6 mt-2">
             <p class="text-surface-0 lg:text-lg xl:text-xl">No workouts available please create one using the button
                 below.</p>
-            <div class="flex justify-center items-center gap-4 mt-2">
                 <Button @click="createWorkout" label="Create Workout" rounded />
             </div>
         </div>
