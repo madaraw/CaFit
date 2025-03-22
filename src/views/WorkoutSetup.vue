@@ -1,14 +1,16 @@
 <template>
-    <div class="bg-surface-950 min-h-screen px-4 pt-6 md:px-12 lg:px-20">
+    <div class="bg-surface-950 min-h-screen px-4 pt-6 md:px-12 lg:px-40">
         <div class="pb-4">
-            <h1 class="text-surface-0 font-bold text-3xl leading-tight">Set up your workout</h1>
-            <p class="text-surface-100">Please follow the steps below to set up your workout plan.</p>
+            <h1 class="text-surface-0 font-bold text-3xl lg:text-4xl leading-tight">Set up your workout</h1>
+            <p class="text-surface-100 lg:text-lg">Please follow the steps below to set up your workout plan.</p>
         </div>
         <Stepper value="1" linear>
             <StepItem value="1">
                 <Step>Workout setup</Step>
-                <StepPanel class="py-6" v-slot="{ activateCallback }">
-                    <form class="space-y-6 ms-4">
+                <StepPanel class="py-6 lg:px-10 p-4" v-slot="{ activateCallback }">
+                    <form class="space-y-6 ms-4 lg:text-lg">
+                        <p class="mb-3">Please select the intensity, frequency, and duration of your workout
+                        </p>
                         <div class="flex items-center justify-start gap-4">
                             <label for="intensity" class="text-surface-0 font-medium">Intensity</label>
                             <Select id="intensity" v-model="workoutOptions.intensity" :options="intensityOptions"
@@ -23,7 +25,7 @@
                         </div>
                         <div class="flex flex-col gap-4">
                             <label for="duration" class="text-surface-0 font-medium">Duration {{ workoutOptions.duration
-                                }}
+                            }}
                                 minutes</label>
                             <div class="flex justify-center">
                                 <Slider id="duration" v-model="workoutOptions.duration" :min="30" :max="180" :step="15"
@@ -42,7 +44,7 @@
             </StepItem>
             <StepItem value="2">
                 <Step>Exercise selection</Step>
-                <StepPanel v-if="exercisesByCategory" class="p-4" v-slot="{ activateCallback }">
+                <StepPanel v-if="exercisesByCategory" class="p-4 lg:px-10 py-6" v-slot="{ activateCallback }">
                     <Tabs v-model:value="selectedTab" scrollable>
                         <TabList>
                             <Tab v-for="(exerciseCategory, index) in Object.keys(exercisesByCategory)" :key="index"
@@ -52,7 +54,7 @@
                             </Tab>
                         </TabList>
                         <TabPanels>
-                            <p class="mb-3">Choose a maximum of {{ `${workoutPlan.numberExercisesPerBodyPart}
+                            <p class="mb-3 lg:text-lg">Choose a maximum of {{ `${workoutPlan.numberExercisesPerBodyPart}
                                 ${workoutPlan.numberExercisesPerBodyPart === 1 ? 'exercise' : 'exercises'}` }} per body
                                 part
                                 please</p>
@@ -67,7 +69,7 @@
                         </TabPanels>
                     </Tabs>
                     <p class="text-red-400 mb-2" v-if="selectedExercisesErrorMessage">{{ selectedExercisesErrorMessage
-                        }}</p>
+                    }}</p>
                     <Button label="back" class="!mr-2" @click="activateCallback('1')" />
                     <Button label="Next" class="!mr-2" @click="getExercisePlan(activateCallback)" />
                     <Button label="randomize" outlined @click="randomExercises(activateCallback)" />
@@ -75,7 +77,7 @@
             </StepItem>
             <StepItem value="3">
                 <Step>Review</Step>
-                <StepPanel class="py-6" v-slot="{ activateCallback }">
+                <StepPanel class="py-6 px-4 lg:px-10 lg:text-xl mb-2" v-slot="{ activateCallback }">
                     <div class="space-y-6">
                         <p class="font-bold">Review your workout plan</p>
                         <div class="space-y-2">
@@ -89,7 +91,7 @@
                             <p class="flex gap-2" v-for="(muscle, index) in Object.keys(exercisePlanShow)" :key="index">
                                 <span class="font-semibold "> {{ muscle.charAt(0).toUpperCase() +
                                     muscle.slice(1)
-                                    }}:</span>
+                                }}:</span>
                                 {{exercisePlanShow[muscle].map(exercise =>
                                     exercise.name).join(', ')}}
                             </p>
