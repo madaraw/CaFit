@@ -4,7 +4,8 @@
             <h1 class="text-surface-0 font-bold text-4xl leading-tight">Workout List</h1>
         </div>
         <div v-if="workoutsTable.length">
-            <DataTable @row-select="goToWorkout" v-model:selection="selectedWorkout" selectionMode="single" dataKey="id"
+            <DataTable @row-select="goToWorkout" v-model:selection="selectedWorkout"
+                :size="device === 0 ? 'small' : device === 1 ? 'normal' : 'large'" selectionMode="single" dataKey="id"
                 :value="workoutsTable" size='small'>
                 <Column field="name" header="Name"></Column>
                 <Column field="intensity.name" header="Intensity"></Column>
@@ -29,13 +30,15 @@
                     <p class="text-surface-0">No workouts available</p>
                 </Row>
             </DataTable>
-            <p class="text-surface-0 mt-4">Not enough workouts? Create one using the button below.</p>
-            <div class="flex justify-center items-center gap-4 mt-2">
+            <div class="flex items-center gap-6 mt-6">
+                <p class="text-surface-0 lg:text-lg xl:text-xl">Not enough workouts? Create one using this button.
+                </p>
                 <Button @click="createWorkout" label="Create Workout" rounded />
             </div>
         </div>
         <div class="mt-10" v-else>
-            <p class="text-surface-0">No workouts available please create one using the button below.</p>
+            <p class="text-surface-0 lg:text-lg xl:text-xl">No workouts available please create one using the button
+                below.</p>
             <div class="flex justify-center items-center gap-4 mt-2">
                 <Button @click="createWorkout" label="Create Workout" rounded />
             </div>
@@ -48,12 +51,13 @@
     import Column from 'primevue/column';
     import Button from 'primevue/button';
     import Row from 'primevue/row';
-    import { onBeforeMount, ref, watch } from 'vue';
+    import { onBeforeMount, ref } from 'vue';
     import { useRouter } from 'vue-router';
 
     const workoutsTable = ref([])
     const selectedWorkout = ref(null)
     const router = useRouter()
+    let device = screen.width <= 640 ? 0 : screen.width <= 1024 ? 1 : 2
 
     const createWorkout = () => {
         router.push({ name: 'workout-setup' })
