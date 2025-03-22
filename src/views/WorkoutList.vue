@@ -20,8 +20,9 @@
                 </Column>
                 <Column field="id">
                     <template #body="slotProps">
-                        <Button icon="pi pi-trash" severity="danger" @click="deleteWorkout(slotProps.data.id)" />
-                    </template>F
+                        <ConfirmDialog />
+                        <Button icon="pi pi-trash" severity="danger" @click="deleteWorkoutConfirm(slotProps.data.id)" />
+                    </template>
                 </Column>
                 <Row v-if="!workoutsTable">
                     <div class="flex justify-center">
@@ -38,8 +39,8 @@
         </div>
         <div class="mt-10" v-else>
             <div class="flex flex-col md:flex-row items-center gap-6 mt-2">
-            <p class="text-surface-0 lg:text-lg xl:text-xl">No workouts available please create one using the button
-                below.</p>
+                <p class="text-surface-0 lg:text-lg xl:text-xl">No workouts available please create one using the button
+                    below.</p>
                 <Button @click="createWorkout" label="Create Workout" rounded />
             </div>
         </div>
@@ -51,16 +52,38 @@
     import Column from 'primevue/column';
     import Button from 'primevue/button';
     import Row from 'primevue/row';
+    import ConfirmDialog from 'primevue/confirmdialog';
+    import { useConfirm } from "primevue/useconfirm";
     import { onBeforeMount, ref } from 'vue';
     import { useRouter } from 'vue-router';
 
     const workoutsTable = ref([])
     const selectedWorkout = ref(null)
     const router = useRouter()
+    const deleteConfirmDialog = useConfirm();
     let device = screen.width <= 640 ? 0 : screen.width <= 1024 ? 1 : 2
 
     const createWorkout = () => {
         router.push({ name: 'workout-setup' })
+    }
+    const deleteWorkoutConfirm = (id) => {
+        deleteConfirmDialog.require({
+            message: 'Are you sure you want to delete this workout?',
+            header: 'Delete Workout',
+            icon: 'pi pi-info-circle',
+            acceptProps: {
+                label: 'Delete',
+                severity: 'danger'
+            },
+            rejectProps: {
+                label: 'Cancel',
+                severity: 'secondary'
+            },
+            accept: () => {
+                deleteWorkout(id)
+            },
+            reject: () => { }
+        })
     }
     const deleteWorkout = (id) => {
         let index = workoutsTable.value.findIndex(workout => workout.id === id)
