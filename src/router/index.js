@@ -3,6 +3,8 @@ import HomeView from '../views/HomeView.vue'
 import WorkoutSetup from '../views/WorkoutSetup.vue'
 import WorkoutPlan from '../views/WorkoutPlan.vue'
 import WorkoutList from '../views/WorkoutList.vue'
+import About from '@/views/About.vue'
+import Contact from '@/views/Contact.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,6 +28,16 @@ const router = createRouter({
       path: '/workout-list',
       name: 'workout-list',
       component: WorkoutList,
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: About
+    },
+    {
+      path: '/contact',
+      name: 'contact',
+      component: Contact
     }
   ],
 })
