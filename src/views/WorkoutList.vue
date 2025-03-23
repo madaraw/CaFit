@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-surface-950 min-h-screen px-4 pt-6 md:px-12 xl:px-40">
+    <div class="px-4 pt-6 md:px-12 xl:px-40">
         <div class="flex justify-center my-4">
             <h1 class="text-surface-0 font-bold text-4xl leading-tight">Workout List</h1>
         </div>

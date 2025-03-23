@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-surface-950 min-h-screen px-4 pt-6 md:px-12 xl:px-40">
+    <div class="px-4 pt-6 md:px-12 xl:px-40">
         <div class="pb-4">
             <h1 class="text-surface-0 font-bold text-3xl xl:text-4xl leading-tight">Set up your workout</h1>
             <p class="text-surface-100 mt-2 xl:text-lg">Please follow the steps below to set up your workout plan.</p>
