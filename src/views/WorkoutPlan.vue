@@ -1,19 +1,20 @@
 <template>
-    <div class="space-y-3 px-1 md:px-12 lg:px-20">
-        <div class="flex flex-col px-2 mt-2">
-            <div class="flex justify-center mb-2">
-                <h1 class="text-surface-0 font-bold text-4xl leading-tight">Workout Plan</h1>
+    <div class=" px-1 md:px-12 lg:px-20">
+        <div class="space-y-3" v-if="exercisePlan">
+            <div class="flex flex-col px-2 mt-2">
+                <div class="flex justify-center mb-2">
+                    <h1 class="text-surface-0 font-bold text-4xl leading-tight">Workout Plan</h1>
+                </div>
+                <div class="text-base lg:text-lg">
+                    <p><span class="font-semibold">Name:</span> {{ workoutPlan.name }}</p>
+                    <p><span class="font-semibold">Intensity:</span> {{ workoutPlan.intensity.name }}.</p>
+                    <p><span class="font-semibold">Duration of the workout:</span> {{ workoutPlan.duration }} minutes.
+                    </p>
+                    <p><span class="font-semibold">frequency:</span> {{ workoutPlan.frequency }} per week.</p>
+                </div>
             </div>
-            <div class="text-base lg:text-lg">
-                <p><span class="font-semibold">Name:</span> {{ workoutPlan.name }}</p>
-                <p><span class="font-semibold">Intensity:</span> {{ workoutPlan.intensity.name }}.</p>
-                <p><span class="font-semibold">Duration of the workout:</span> {{ workoutPlan.duration }} minutes.</p>
-                <p><span class="font-semibold">frequency:</span> {{ workoutPlan.frequency }} per week.</p>
-            </div>
-        </div>
-        <div class="py-4">
-            <DataTable :value="exercisePlan" rowGroupMode="subheader" groupRowsBy="primaryMuscle" sortMode="single"
-                sortField="primaryMuscle" :sortOrder="1"
+            <DataTable class="py-4" :value="exercisePlan" rowGroupMode="subheader" groupRowsBy="primaryMuscle"
+                sortMode="single" sortField="primaryMuscle" :sortOrder="1"
                 :size="device === 0 ? 'small' : device === 1 ? 'normal' : 'large'" editMode="cell"
                 @cell-edit-complete="cellEdited">
                 <Column field="primaryMuscle"></Column>
@@ -61,6 +62,15 @@
                     </div>
                 </template>
             </DataTable>
+        </div>
+        <div class="py-4 px-2 space-y-1 lg:space-y-3" v-else>
+            <h1 class="text-surface-0 font-bold text-4xl text-center leading-tight">Workout Plan</h1>
+            <p class="text-surface-100 text-xl leading-normal">No workouts found with this ID. Please create one using
+                the
+                button below.</p>
+            <div class="flex justify-center my-4">
+                <Button label="Create Workout" @click="$router.push('/workout-setup')" rounded />
+            </div>
         </div>
     </div>
 </template>
