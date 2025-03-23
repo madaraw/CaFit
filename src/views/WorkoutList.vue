@@ -101,7 +101,6 @@
     onBeforeMount(() => {
         try {
             workoutsTable.value = JSON.parse(localStorage.getItem('workoutsTable'))
-            console.log(workoutsTable.value)
         } catch (error) {
             console.log(error)
             return
