@@ -1,29 +1,59 @@
-# cafit
+# CaFit - Custom Workout & Tracking App
 
-This template should help get you started developing with Vue 3 in Vite.
+CaFit is a fitness web app that allows users to create a custom workout plan, replace exercises, and track their weight progress. Built with Vue.js, TailwindCSS, and PrimeVue, this project showcases web app development skills and is open-source.
 
-## Recommended IDE Setup
+## Features
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+-   **Custom Workout Plan**: Set intensity, session time, and weekly workouts.
+-   **Exercise Selection**: Choose exercises for each body part from a modified exercise database.
+-   **Weight Tracking**: Monitor your working set weight for each exercise.
+-   **Local Storage**: Saves all data locally without authentication.
+-   **Responsive Design**: Works on various devices (though not fully optimized).
 
-## Customize configuration
+## Demo
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+[Live App on Vercel](https://cafit.vercel.app/)
 
-## Project Setup
+## Tech Stack
 
-```sh
-npm install
-```
+-   **Frontend**: Vue.js, TailwindCSS, PrimeVue
+-   **Storage**: LocalStorage (no backend or authentication)
+-   **Data Source**: Modified dataset from [free-exercise-db](https://github.com/yuhonas/free-exercise-db)
 
-### Compile and Hot-Reload for Development
+## Modifications to the Exercise Database
 
-```sh
-npm run dev
-```
+-   Added `weightSet` parameter (default: `0`) for each exercise.
+-   Added `primaryMuscle` as a single string instead of an array.
 
-### Compile and Minify for Production
+## Installation & Setup
 
-```sh
-npm run build
-```
+1. Clone the repository:
+    ```sh
+    git clone https://github.com/madaraw/cafit.git
+    cd cafit
+    ```
+2. Install dependencies:
+    ```sh
+    npm install
+    ```
+3. Run the development server:
+    ```sh
+    npm run dev
+    ```
+4. Open `http://localhost:5173/` in your browser.
+
+## Future Improvements
+
+-   Track workouts per session (not just max weight) with detailed graphs.
+-   UI/UX improvements for a better experience.
+-   Authentication & database integration for persistent data storage.
+
+## License
+
+This project is open-source and built for portfolio purposes.
+
+---
+
+### Contributions & Feedback
+
+Feel free to fork, modify, or suggest improvements!
