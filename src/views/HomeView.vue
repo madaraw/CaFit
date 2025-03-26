@@ -1,5 +1,6 @@
 <template>
-  <div class="flex flex-col gap-6 lg:flex-row justify-center items-center px-6 py-20 md:px-12 lg:px-20">
+  <div
+    class="flex flex-col gap-6 lg:flex-row justify-center items-center min-h-[calc(100vh-74 px)] px-6 md:px-12 lg:px-20">
     <div class="order-last lg:order-first text-surface-100 text-center flex flex-col items-center gap-4">
 
       <div class="text-primary font-bold text-lg leading-tight flex justify-center items-center gap-1">
