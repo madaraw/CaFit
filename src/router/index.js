@@ -13,31 +13,49 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
+      meta: {
+        title: 'CaFit - Home'
+      }
     },
     {
       path: '/workout-setup',
       name: 'workout-setup',
       component: WorkoutSetup,
+      meta: {
+        title: 'CaFit - Setup Your Workout'
+      }
     },
     {
       path: '/workout-plan/:id',
       name: 'workout-plan',
       component: WorkoutPlan,
+      meta: {
+        title: 'CaFit - Workout Plan'
+      }
     },
     {
       path: '/workout-list',
       name: 'workout-list',
       component: WorkoutList,
+      meta: {
+        title: 'CaFit - Workout List'
+      }
     },
     {
       path: '/about',
       name: 'about',
-      component: About
+      component: About,
+      meta: {
+        title: 'CaFit - About'
+      }
     },
     {
       path: '/contact',
       name: 'contact',
-      component: Contact
+      component: Contact,
+      meta: {
+        title: 'CaFit - Contact'
+      }
     }
   ],
 })
